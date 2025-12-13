@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Remove backup files for Tarutyyyne
+# Emacs temporary files
+*~
+\#*\#
+.\#*
