@@ -45,7 +45,7 @@ const RecaptchaBox = () => {
       >
         {checkboxContent}
         <span className="text-lg font-medium text-[#444]">
-          I&apos;m not a robot
+          I&apos;m a robot
         </span>
       </button>
 
