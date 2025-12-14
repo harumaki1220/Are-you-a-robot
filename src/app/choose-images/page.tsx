@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 type ImageItem = {
   id: number;
   hasLove: boolean;
@@ -17,13 +21,30 @@ const IMAGE_DATA: ImageItem[] = [
 ];
 
 export default function ChooseImagePage() {
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  const toggleSelect = (id: number) => {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter((item) => item !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
+    }
+  };
+
   return (
-    <div className="p-4 flex justify-center">
+    <div className="min-h-screen p-4 flex items-center justify-center">
       <div className="grid gap-2 grid-cols-3 grid-rows-3">
         {IMAGE_DATA.map((item) => (
           <div
             key={item.id}
-            className="bg-gray-200 aspect-square flex items-center"
+            onClick={() => toggleSelect(item.id)}
+            className={`bg-gray-200 aspect-square flex items-center cursor-pointer
+                ${
+                  selectedIds.includes(item.id)
+                    ? "border-2 border-blue-500"
+                    : ""
+                }
+            `}
           >
             ID: {item.id}
           </div>
