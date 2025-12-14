@@ -20,7 +20,7 @@ const RecaptchaBox = () => {
   };
 
   let checkboxContent = (
-    <span className="inline-flex h-5 w-5 items-center justify-center rounded border border-black bg-white" />
+    <span className="inline-flex h-9 w-9 items-center justify-center rounded border border-black bg-white" />
   );
 
   if (status === "loading") {
@@ -44,28 +44,44 @@ const RecaptchaBox = () => {
         className="
 	flex
 	items-center
-	gap-2
+	gap-4
 	rounded
 	border border-[#d3d3d3]
 	bg-[#f9f9f9]
 	text-left
 	shadow-sm
-	text-gray-700 hover:bg-gray-100
+	text-gray-700
 	w-[450px] h-[110px]
         px-4" 
         aria-label="reCAPTCHA checkbox"
       >
         {checkboxContent}
         <span className="text-lg font-medium text-[#444]">
-          I am a robot
+	I'm a robot
         </span>
-	<Image
-	  src="/meCHAKCHA.png"
-	  alt="meCHAKCHA"
-	  width={55}
-	  height={55}
-	  className="ml-auto"
-	/>
+	<div
+	  className="
+	  flex flex-col
+	  items-center
+	  justify-center
+	  ml-auto
+	  px-3
+	  py-2
+	  min-w-[110px]
+	  h-full"
+	 >
+	  <Image
+	    src="/meCHAKCHA.png"
+	    alt="meCHAKCHA"
+	    width={45}
+	    height={45}
+	    className="mb-2"
+	  />
+	  <div className="flex flex-col items-center gap-0 leading-tight">
+	    <p className="text-[11px] font-medium text-gray-600">meCHAKCHA</p>
+	    <p className="text-[9px] text-gray-600">No Privacy No Terms</p>
+	  </div>
+	</div>
       </button>
 
       {status === "checked" && <Recaptcha />}
