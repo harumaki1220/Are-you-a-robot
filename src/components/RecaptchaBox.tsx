@@ -16,19 +16,22 @@ const RecaptchaBox = () => {
       return;
     }
     setStatus("loading");
-    //setTimeout(() => setStatus("checked"), 300);
+    setTimeout(() => setStatus("checked"), 3000);
   };
 
   let checkboxContent = (
     <span
       className={`
       inline-flex items-center justify-center
+      h-9 w-9
+      border-solid
+      transition-[border-radius,border-width,border-color] duration-200 ease-in
     ${
       status === "idle"
-        ? "h-9 w-9 rounded border border-black bg-white"
+        ? "rounded border border-black bg-white"
         : status === "loading"
-        ? "h-9 w-9 rounded-full border-[5px] border-[#3498db] border-t-transparent animate-spin"
-        : "h-9 w-9 rounded bg-red"
+        ? "rounded-full border-[7px] border-[#3498db] border-t-transparent animate-spin"
+        : "checked relative"
     }
   `}
     >
@@ -83,8 +86,8 @@ const RecaptchaBox = () => {
 	</div>
       </button>
 
-      <span className="text-black">TEST: Current Status is {status}</span>
-      {status === "checked" &&  <Recaptcha />}
+      <span className="text-black">TEST : Current Status is {status}</span>
+   
     </div>
   );
 };
