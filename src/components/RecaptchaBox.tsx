@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Recaptcha from "@/components/Recaptcha";
+import Image from "next/image";
 
 type Status = "idle" | "loading" | "checked";
 
@@ -45,8 +46,14 @@ const RecaptchaBox = () => {
       >
         {checkboxContent}
         <span className="text-lg font-medium text-[#444]">
-          I&apos;m not a robot
+          I am a robot
         </span>
+	<Image
+	  src="/meCHAKCHA.png"
+	  alt="meCHAKCHA"
+	  width={20}
+	  height={20}
+	/>
       </button>
 
       {status === "checked" && <Recaptcha />}
