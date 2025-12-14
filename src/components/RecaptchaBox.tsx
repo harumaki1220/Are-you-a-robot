@@ -20,22 +20,19 @@ const RecaptchaBox = () => {
   };
 
   let checkboxContent = (
-    <span className="inline-flex h-9 w-9 items-center justify-center rounded border border-black bg-white" />
+      <span
+	className={`
+        inline-flex items-center justify-center
+	h-9 w-9
+	rounded
+	border border-black
+	bg-white
+        ${status === "loading" ? "rounded-full" : "rounded"}
+        `}
+      >  
+      </span>
   );
 
-  if (status === "loading") {
-    checkboxContent = (
-      <span className="relative inline-flex h-6 w-6 items-center justify-center">
-        <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#7ac142]/30 border-t-[#7ac142]" />
-      </span>
-    );
-  } else if (status === "checked") {
-    checkboxContent = (
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded border border-green-600 bg-green-50">
-        <span className="text-xs font-semibold text-green-700">✓</span>
-      </span>
-    );
-  }
 
   return (
     <div className="flex flex-col items-start gap-4">
