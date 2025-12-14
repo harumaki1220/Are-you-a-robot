@@ -20,7 +20,7 @@ const RecaptchaBox = () => {
   };
 
   let checkboxContent = (
-    <span className="inline-flex h-5 w-5 items-center justify-center rounded border border-gray-400 bg-white" />
+    <span className="inline-flex h-5 w-5 items-center justify-center rounded border border-black bg-white" />
   );
 
   if (status === "loading") {
@@ -41,7 +41,18 @@ const RecaptchaBox = () => {
     <div className="flex flex-col items-start gap-4">
       <button
         onClick={handleClick}
-        className="flex w-full max-w-xs items-center gap-2 rounded border border-gray-300 bg-white px-3 py-2 text-left text-gray-700 hover:bg-gray-50"
+        className="
+	flex
+	items-center
+	gap-2
+	rounded
+	border border-[#d3d3d3]
+	bg-[#f9f9f9]
+	text-left
+	shadow-sm
+	text-gray-700 hover:bg-gray-100
+	w-[450px] h-[110px]
+        px-4" 
         aria-label="reCAPTCHA checkbox"
       >
         {checkboxContent}
@@ -51,8 +62,9 @@ const RecaptchaBox = () => {
 	<Image
 	  src="/meCHAKCHA.png"
 	  alt="meCHAKCHA"
-	  width={20}
-	  height={20}
+	  width={55}
+	  height={55}
+	  className="ml-auto"
 	/>
       </button>
 
