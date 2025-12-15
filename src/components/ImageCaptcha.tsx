@@ -38,7 +38,7 @@ export default function ImageCaptcha() {
   };
 
   return (
-    <div className="bg-white p-2 shadow-lg max-w-100 w-full">
+    <div className="bg-white p-2 shadow-lg w-full max-w-100 mx-auto max-h-150 overflow-auto [scrollbar-gutter:stable]">
       {/* 青いヘッダー */}
       <div className="bg-blue-500 p-4 text-white mb-2">
         <h2 className="font-bold text-xl">愛</h2>
