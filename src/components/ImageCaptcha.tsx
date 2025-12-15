@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { RefreshCw, Headphones, Info } from "lucide-react";
 
 type ImageItem = {
@@ -18,12 +18,34 @@ const IMAGE_DATA: ImageItem[] = [
   { id: 7, hasLove: true },
   { id: 8, hasLove: false },
   { id: 9, hasLove: false },
+  { id: 10, hasLove: true },
+  { id: 11, hasLove: false },
+  { id: 12, hasLove: true },
+  { id: 13, hasLove: false },
+  { id: 14, hasLove: false },
+  { id: 15, hasLove: true },
+  { id: 16, hasLove: false },
+  { id: 17, hasLove: true },
+  { id: 18, hasLove: false },
   // ここにデータを入れる
 ];
+
+const getRandomImages = () => {
+  const shuffled = [...IMAGE_DATA].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, 9);
+};
 
 export default function ImageCaptcha() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [showInfo, setShowInfo] = useState(false);
+  const [displayedImages, setDisplayedImages] = useState<ImageItem[]>([]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDisplayedImages(getRandomImages());
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleSelect = (id: number) => {
     if (selectedIds.includes(id)) {
@@ -34,11 +56,13 @@ export default function ImageCaptcha() {
   };
 
   const handleRefresh = () => {
+    setDisplayedImages(getRandomImages());
     setSelectedIds([]);
+    setShowInfo(false);
   };
 
   return (
-    <div className="bg-white p-2 shadow-lg max-w-100 w-full">
+    <div className="bg-white p-2 shadow-lg w-full max-w-100 mx-auto max-h-150 overflow-auto [scrollbar-gutter:stable]">
       {/* 青いヘッダー */}
       <div className="bg-blue-500 p-4 text-white mb-2">
         <h2 className="font-bold text-xl">愛</h2>
@@ -46,7 +70,7 @@ export default function ImageCaptcha() {
       </div>
 
       <div className="grid gap-2 grid-cols-3 grid-rows-3">
-        {IMAGE_DATA.map((item) => (
+        {displayedImages.map((item) => (
           <div
             key={item.id}
             onClick={() => toggleSelect(item.id)}
