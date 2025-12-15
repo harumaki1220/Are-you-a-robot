@@ -24,3 +24,32 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.checked {
+  position: relative;
+}
+
+.checked::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: 60%;
+
+  width: 17px;
+  height: 35px;
+
+  border-right: 5px solid #009E55;
+  border-top: 5px solid #009E55;
+
+  transform-origin: center;
+  transform: translate(-39%, 0%) scaleX(-1) rotate(135deg);
+  
+  opacity: 1;
+
+  animation: check 0.8s ease-out forwards;
+}
+
+@keyframes check {
+  0%   { transform: translate(-39%, 0%) scaleX(-1) rotate(135deg); }
+  100% { transform: translate(-39%, 0%) scaleX(-1) rotate(135deg); }
+}

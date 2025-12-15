@@ -16,26 +16,28 @@ const RecaptchaBox = () => {
       return;
     }
     setStatus("loading");
-    setTimeout(() => setStatus("checked"), 300);
+    setTimeout(() => setStatus("checked"), 3000);
   };
 
   let checkboxContent = (
-    <span className="inline-flex h-9 w-9 items-center justify-center rounded border border-black bg-white" />
+    <span
+      className={`
+      inline-flex items-center justify-center
+      h-9 w-9
+      border-solid
+      transition-[border-radius,border-width,border-color] duration-200 ease-in
+    ${
+      status === "idle"
+        ? "rounded border border-black bg-white"
+        : status === "loading"
+        ? "rounded-full border-[7px] border-[#3498db] border-t-transparent animate-spin"
+        : "checked relative"
+    }
+  `}
+    >
+    </span>
   );
 
-  if (status === "loading") {
-    checkboxContent = (
-      <span className="relative inline-flex h-6 w-6 items-center justify-center">
-        <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#7ac142]/30 border-t-[#7ac142]" />
-      </span>
-    );
-  } else if (status === "checked") {
-    checkboxContent = (
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded border border-green-600 bg-green-50">
-        <span className="text-xs font-semibold text-green-700">✓</span>
-      </span>
-    );
-  }
 
   return (
     <div className="flex flex-col items-start gap-4">
@@ -44,7 +46,7 @@ const RecaptchaBox = () => {
         className="
 	flex
 	items-center
-	gap-4
+	gap-5
 	rounded
 	border border-[#d3d3d3]
 	bg-[#f9f9f9]
@@ -84,7 +86,8 @@ const RecaptchaBox = () => {
 	</div>
       </button>
 
-      {status === "checked" && <Recaptcha />}
+      <span className="text-black">TEST : Current Status is {status}</span>
+   
     </div>
   );
 };
