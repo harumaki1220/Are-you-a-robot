@@ -23,6 +23,7 @@ const IMAGE_DATA: ImageItem[] = [
 
 export default function ImageCaptcha() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [showInfo, setShowInfo] = useState(false);
 
   const toggleSelect = (id: number) => {
     if (selectedIds.includes(id)) {
@@ -62,26 +63,40 @@ export default function ImageCaptcha() {
         ))}
       </div>
       {/* フッター */}
-      <div className="flex justify-between items-center mt-4 pt-2 border-t">
-        <div className="flex gap-6 text-gray-400">
-          <button
-            onClick={handleRefresh}
-            className="hover:text-gray-600 transition-colors"
-          >
-            <RefreshCw className="w-8 h-8" />
+      <div className="mt-4 pt-2 border-t">
+        <div className="flex justify-between items-center">
+          <div className="flex gap-6 text-gray-400">
+            <button
+              onClick={handleRefresh}
+              className="hover:text-gray-600 transition-colors"
+            >
+              <RefreshCw className="w-8 h-8" />
+            </button>
+            <div className="hover:text-gray-600 cursor-pointer transition-colors">
+              <Headphones className="w-8 h-8" />
+            </div>
+
+            <button
+              onClick={() => setShowInfo(!showInfo)}
+              className={`hover:text-gray-700 transition-colors ${
+                showInfo ? "text-blue-500" : ""
+              }`}
+            >
+              <Info className="w-8 h-8" />
+            </button>
+          </div>
+
+          <button className="bg-blue-500 text-white px-6 py-2 rounded">
+            次へ
           </button>
-          <div className="hover:text-gray-600 cursor-pointer transition-colors">
-            <Headphones className="w-8 h-8" />
-          </div>
-
-          <div className="hover:text-gray-600 cursor-pointer transition-colors">
-            <Info className="w-8 h-8" />
-          </div>
         </div>
-
-        <button className="bg-blue-500 text-white px-6 py-2 rounded">
-          次へ
-        </button>
+        {showInfo && (
+          <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
+            <p>
+              テキストで書かれているものを含むタイルをすべてクリックします。該当するものを含む新しい画像が表示された場合は、それもクリックしてください。クリックする画像がなくなったら、[確認]をクリックします。
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
