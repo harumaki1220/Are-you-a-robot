@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { RefreshCw, Headphones, Info } from "lucide-react";
 
 type ImageItem = {
   id: number;
@@ -31,6 +32,10 @@ export default function ImageCaptcha() {
     }
   };
 
+  const handleRefresh = () => {
+    setSelectedIds([]);
+  };
+
   return (
     <div className="bg-white p-2 shadow-lg max-w-100 w-full">
       {/* 青いヘッダー */}
@@ -58,10 +63,20 @@ export default function ImageCaptcha() {
       </div>
       {/* フッター */}
       <div className="flex justify-between items-center mt-4 pt-2 border-t">
-        <div className="flex gap-4 text-gray-400 text-xl">
-          <span>↻</span>
-          <span>🎧</span>
-          <span>i</span>
+        <div className="flex gap-6 text-gray-400">
+          <button
+            onClick={handleRefresh}
+            className="hover:text-gray-600 transition-colors"
+          >
+            <RefreshCw className="w-8 h-8" />
+          </button>
+          <div className="hover:text-gray-600 cursor-pointer transition-colors">
+            <Headphones className="w-8 h-8" />
+          </div>
+
+          <div className="hover:text-gray-600 cursor-pointer transition-colors">
+            <Info className="w-8 h-8" />
+          </div>
         </div>
 
         <button className="bg-blue-500 text-white px-6 py-2 rounded">
