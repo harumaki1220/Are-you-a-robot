@@ -1,51 +1,117 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+
 import { RefreshCw, Headphones, Info } from "lucide-react";
 
 type ImageItem = {
   id: number;
-  hasLove: boolean;
+
+  isCorrect: boolean;
 };
 
-const IMAGE_DATA: ImageItem[] = [
-  { id: 1, hasLove: true },
-  { id: 2, hasLove: false },
-  { id: 3, hasLove: false },
-  { id: 4, hasLove: true },
-  { id: 5, hasLove: false },
-  { id: 6, hasLove: true },
-  { id: 7, hasLove: true },
-  { id: 8, hasLove: false },
-  { id: 9, hasLove: false },
-  { id: 10, hasLove: true },
-  { id: 11, hasLove: false },
-  { id: 12, hasLove: true },
-  { id: 13, hasLove: false },
-  { id: 14, hasLove: false },
-  { id: 15, hasLove: true },
-  { id: 16, hasLove: false },
-  { id: 17, hasLove: true },
-  { id: 18, hasLove: false },
+const LOVE_IMAGE_DATA: ImageItem[] = [
+  { id: 1, isCorrect: true },
+
+  { id: 2, isCorrect: false },
+
+  { id: 3, isCorrect: false },
+
+  { id: 4, isCorrect: true },
+
+  { id: 5, isCorrect: false },
+
+  { id: 6, isCorrect: true },
+
+  { id: 7, isCorrect: true },
+
+  { id: 8, isCorrect: false },
+
+  { id: 9, isCorrect: false },
+
+  { id: 10, isCorrect: true },
+
+  { id: 11, isCorrect: false },
+
+  { id: 12, isCorrect: false },
+
+  { id: 13, isCorrect: false },
+
+  { id: 14, isCorrect: true },
+
+  { id: 15, isCorrect: false },
+
+  { id: 16, isCorrect: true },
+
+  { id: 17, isCorrect: true },
+
+  { id: 18, isCorrect: false },
+
   // ここにデータを入れる
 ];
 
-const getRandomImages = () => {
-  const shuffled = [...IMAGE_DATA].sort(() => 0.5 - Math.random());
+const BIKE_IMAGE_DATA: ImageItem[] = [
+  { id: 19, isCorrect: true },
+
+  { id: 20, isCorrect: false },
+
+  { id: 21, isCorrect: false },
+
+  { id: 22, isCorrect: true },
+
+  { id: 23, isCorrect: false },
+
+  { id: 24, isCorrect: true },
+
+  { id: 25, isCorrect: true },
+
+  { id: 26, isCorrect: false },
+
+  { id: 27, isCorrect: false },
+
+  { id: 28, isCorrect: true },
+
+  { id: 29, isCorrect: false },
+
+  { id: 30, isCorrect: false },
+
+  { id: 31, isCorrect: false },
+
+  { id: 32, isCorrect: true },
+
+  { id: 33, isCorrect: false },
+
+  { id: 34, isCorrect: true },
+
+  { id: 35, isCorrect: true },
+
+  { id: 36, isCorrect: false },
+];
+
+const getRandomImages = (sourceData: ImageItem[]) => {
+  const shuffled = [...sourceData].sort(() => 0.5 - Math.random());
+
   return shuffled.slice(0, 9);
 };
 
 export default function ImageCaptcha() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
   const [showInfo, setShowInfo] = useState(false);
+
   const [displayedImages, setDisplayedImages] = useState<ImageItem[]>([]);
+
+  const [questionStep, setQuestionStep] = useState(0); // 0: 自転車, 1: 愛
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDisplayedImages(getRandomImages());
+      const data = questionStep === 0 ? BIKE_IMAGE_DATA : LOVE_IMAGE_DATA;
+
+      setDisplayedImages(getRandomImages(data));
     }, 0);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [questionStep]);
 
   const toggleSelect = (id: number) => {
     if (selectedIds.includes(id)) {
@@ -56,16 +122,32 @@ export default function ImageCaptcha() {
   };
 
   const handleRefresh = () => {
-    setDisplayedImages(getRandomImages());
+    const data = questionStep === 0 ? BIKE_IMAGE_DATA : LOVE_IMAGE_DATA;
+
+    setDisplayedImages(getRandomImages(data));
+
     setSelectedIds([]);
+
     setShowInfo(false);
+  };
+
+  const handleNextQuestion = () => {
+    if (questionStep === 0) {
+      setQuestionStep(questionStep + 1);
+
+      setSelectedIds([]);
+    } else {
+      alert("認証完了！");
+    }
   };
 
   return (
     <div className="bg-white p-2 shadow-lg w-full max-w-100 mx-auto max-h-150 overflow-auto [scrollbar-gutter:stable]">
       {/* 青いヘッダー */}
       <div className="bg-blue-500 p-4 text-white mb-2">
-        <h2 className="font-bold text-xl">愛</h2>
+        <h2 className="font-bold text-xl">
+          {questionStep === 0 ? "自転車" : "愛"}
+        </h2>
         <p>の画像をすべて選択してください</p>
       </div>
 
@@ -99,7 +181,6 @@ export default function ImageCaptcha() {
             <div className="hover:text-gray-600 cursor-pointer transition-colors">
               <Headphones className="w-8 h-8" />
             </div>
-
             <button
               onClick={() => setShowInfo(!showInfo)}
               className={`hover:text-gray-700 transition-colors ${
@@ -109,9 +190,11 @@ export default function ImageCaptcha() {
               <Info className="w-8 h-8" />
             </button>
           </div>
-
-          <button className="bg-blue-500 text-white px-6 py-2 rounded">
-            次へ
+          <button
+            onClick={handleNextQuestion}
+            className="bg-blue-500 text-white px-6 py-2 rounded"
+          >
+            {questionStep === 0 ? "確認" : "次へ"}
           </button>
         </div>
         {showInfo && (
