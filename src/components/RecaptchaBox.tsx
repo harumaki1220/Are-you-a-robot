@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Recaptcha from "@/components/Recaptcha";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 type Status = "idle" | "loading" | "checked";
 
 const RecaptchaBox = () => {
+  const router = useRouter();
+
   const [status, setStatus] = useState<Status>("idle");
 
   const handleClick = () => {
@@ -16,7 +18,10 @@ const RecaptchaBox = () => {
       return;
     }
     setStatus("loading");
-    setTimeout(() => setStatus("checked"), 3000);
+    setTimeout(() => {
+      router.push("/choose-images");
+    }, 2000);
+    //setTimeout(() => setStatus("checked"), 3000);
   };
 
   let checkboxContent = (
@@ -40,10 +45,26 @@ const RecaptchaBox = () => {
 
 
   return (
-    <div className="flex flex-col items-start gap-4">
+    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="flex flex-col items-center gap-20">
+      <h1
+	className="
+	text-5xl
+	md:text-6xl
+	font-extrabold
+	tracking-widest
+	text-gray-600
+	mb-12
+	select-none
+	" 
+      >
+	 ARE YOU A ROBOT ?
+      </h1>
+
       <button
         onClick={handleClick}
         className="
+	relative
 	flex
 	items-center
 	gap-5
@@ -87,7 +108,10 @@ const RecaptchaBox = () => {
       </button>
 
       <span className="text-black">TEST : Current Status is {status}</span>
-   
+      {/* sorry but I do not want to write f*ckin' CSS anymore */}
+      <div />
+      <div />      
+    </div>
     </div>
   );
 };
