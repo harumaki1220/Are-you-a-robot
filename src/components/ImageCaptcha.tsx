@@ -3,55 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { RefreshCw, Headphones, Info } from "lucide-react";
-
-type ImageItem = {
-  id: number;
-
-  isCorrect: boolean;
-};
-
-const LOVE_IMAGE_DATA: ImageItem[] = [
-  { id: 1, isCorrect: true },
-  { id: 2, isCorrect: false },
-  { id: 3, isCorrect: false },
-  { id: 4, isCorrect: true },
-  { id: 5, isCorrect: false },
-  { id: 6, isCorrect: true },
-  { id: 7, isCorrect: true },
-  { id: 8, isCorrect: false },
-  { id: 9, isCorrect: false },
-  { id: 10, isCorrect: true },
-  { id: 11, isCorrect: false },
-  { id: 12, isCorrect: false },
-  { id: 13, isCorrect: false },
-  { id: 14, isCorrect: true },
-  { id: 15, isCorrect: false },
-  { id: 16, isCorrect: true },
-  { id: 17, isCorrect: true },
-  { id: 18, isCorrect: false },
-  // ここにデータを入れる
-];
-
-const BIKE_IMAGE_DATA: ImageItem[] = [
-  { id: 19, isCorrect: true },
-  { id: 20, isCorrect: false },
-  { id: 21, isCorrect: false },
-  { id: 22, isCorrect: true },
-  { id: 23, isCorrect: false },
-  { id: 24, isCorrect: true },
-  { id: 25, isCorrect: true },
-  { id: 26, isCorrect: false },
-  { id: 27, isCorrect: false },
-  { id: 28, isCorrect: true },
-  { id: 29, isCorrect: false },
-  { id: 30, isCorrect: false },
-  { id: 31, isCorrect: false },
-  { id: 32, isCorrect: true },
-  { id: 33, isCorrect: false },
-  { id: 34, isCorrect: true },
-  { id: 35, isCorrect: true },
-  { id: 36, isCorrect: false },
-];
+import { ImageItem, LOVE_IMAGE_DATA, BIKE_IMAGE_DATA } from "@/data/imageData";
 
 // まっちゃへ
 // 必ず一枚は isCorrect: true の画像を含むようランダムに9枚を選ぶ関数に実装
@@ -77,6 +29,7 @@ export default function ImageCaptcha() {
   const [displayedImages, setDisplayedImages] = useState<ImageItem[]>([]);
   const [questionStep, setQuestionStep] = useState(0); // 0: 自転車, 1: 愛
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [score, setScore] = useState(100); // スコアの初期値
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -102,19 +55,51 @@ export default function ImageCaptcha() {
     setShowInfo(false);
   };
 
+  // 正解判定ロジック
+  const validateSelection = (): boolean => {
+    // 表示されている画像の中で isCorrect: true のものをすべて取得
+    const correctImages = displayedImages.filter((img) => img.isCorrect);
+    const incorrectImages = displayedImages.filter((img) => !img.isCorrect);
+
+    // すべての正解画像が選択されているか
+    const allCorrectSelected = correctImages.every((img) =>
+      selectedIds.includes(img.id)
+    );
+
+    // 不正解画像が一つも選択されていないか
+    const noIncorrectSelected = incorrectImages.every(
+      (img) => !selectedIds.includes(img.id)
+    );
+
+    return allCorrectSelected && noIncorrectSelected;
+  };
+
   const handleNextQuestion = () => {
     if (selectedIds.length === 0) {
       setErrorMessage("該当する画像をすべて選択してください。");
       return;
     }
-    if (errorMessage) {
-      setErrorMessage(null);
+
+    // 正解判定
+    const isCorrectAnswer = validateSelection();
+
+    if (!isCorrectAnswer) {
+      // 間違った場合
+      setScore((prev) => Math.max(0, prev - 10)); // スコアを10減らす（最小0）
+      setErrorMessage("もう一度お試しください");
+      return;
     }
+
+    // 正解の場合
+    setErrorMessage(null);
+
     if (questionStep === 0) {
       setQuestionStep(questionStep + 1);
       setSelectedIds([]);
     } else {
-      alert("認証完了！");
+      // 全問クリア - スコアをクエリパラメータで渡して結果ページへ
+      // TODO: ルーティング実装時にここを修正
+      alert(`認証完了！ スコア: ${score}点`);
     }
   };
 
