@@ -27,13 +27,13 @@ const getRandomImages = (sourceData: ImageItem[]) => {
 };
 
 export default function ImageCaptcha() {
+  const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [showInfo, setShowInfo] = useState(false);
   const [displayedImages, setDisplayedImages] = useState<ImageItem[]>([]);
   const [questionStep, setQuestionStep] = useState(0); // 0: 自転車, 1: 愛
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [score, setScore] = useState(100); // スコアの初期値
-  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,6 +57,7 @@ export default function ImageCaptcha() {
     setDisplayedImages(getRandomImages(data));
     setSelectedIds([]);
     setShowInfo(false);
+    setErrorMessage(null);
   };
 
   // 正解判定ロジック
@@ -102,9 +103,7 @@ export default function ImageCaptcha() {
       setSelectedIds([]);
     } else {
       // 全問クリア - スコアをクエリパラメータで渡して結果ページへ
-      // TODO: ルーティング実装時にここを修正
-      router.push(`/result`)
-      alert(`認証完了！ スコア: ${score}点`);
+      router.push(`/result?score=${score}`);
     }
   };
 

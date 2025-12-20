@@ -1,19 +1,14 @@
 "use client";
 
+import { Suspense } from "react";
 import RecaptchaBox from "@/components/RecaptchaBox";
-import ImageCaptcha from "@/components/ImageCaptcha";
-import { use } from "react";
+import { useSearchParams } from "next/navigation";
 
-interface ResultPageProps {
-  searchParams: Promise<{
-    score?: string;
-  }>;
-}
-
-const Result = ({ searchParams }: ResultPageProps) => {
-  const { score } = use(searchParams);
-
-  console.log({score})
+// useSearchParamsを使用するコンポーネントを分離
+function ResultContent() {
+  const searchParams = useSearchParams();
+  const score = searchParams.get("score");
+  const displayScore = score ?? "スコアを取得できませんでした";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 relative">
@@ -25,7 +20,9 @@ const Result = ({ searchParams }: ResultPageProps) => {
 
       <div className="relative z-20 flex flex-col items-center">
         <div className="w-80 h-96 bg-gray-100 border border-gray-300 shadow-lg rounded-md flex items-center justify-center">
-          <h2 className="text-3xl font-semibold text-gray-700">SCORE:{score}</h2>
+          <h2 className="text-3xl font-semibold text-gray-700">
+            SCORE: {displayScore}
+          </h2>
         </div>
 
         <div className="mt-8 flex gap-8">
@@ -38,6 +35,15 @@ const Result = ({ searchParams }: ResultPageProps) => {
         </div>
       </div>
     </div>
+  );
+}
+
+// メインコンポーネント - Suspenseでラップ
+const Result = () => {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">読み込み中...</div>}>
+      <ResultContent />
+    </Suspense>
   );
 };
 
