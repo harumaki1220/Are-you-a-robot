@@ -47,7 +47,7 @@ const RecaptchaBox = () => {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white transition-all duration-500">
+    <div className="min-h-screen relative flex flex-col items-center justify-center bg-white transition-all duration-500">
       {/* タイトル（captcha表示時は上に移動） */}
       <h1
         className={`
@@ -57,9 +57,10 @@ const RecaptchaBox = () => {
           tracking-widest
           text-gray-600
           select-none
+	  whitespace-nowrap
           transition-all duration-500 ease-out
           ${status === "captcha" 
-            ? "absolute top-6 left-1/2 -translate-x-1/2" 
+            ? "absolute top-20 left-3/5 -translate-x-1/2" 
             : "mb-20"
           }
         `}
