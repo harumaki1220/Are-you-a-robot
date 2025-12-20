@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { RefreshCw, Headphones, Info, Check } from "lucide-react";
 import { ImageItem, LOVE_IMAGE_DATA, BIKE_IMAGE_DATA } from "@/data/imageData";
+import Image from "next/image";
 
 // 必ず一枚は isCorrect: true の画像を含むようランダムに9枚を選ぶ関数に実装
 const getRandomImages = (sourceData: ImageItem[]) => {
@@ -111,14 +112,14 @@ export default function ImageCaptcha() {
         className="
           absolute -left-3 top-1/2 -translate-y-1/2
           w-0 h-0
-          border-t-[12px] border-t-transparent
-          border-r-[12px] border-r-white
-          border-b-[12px] border-b-transparent
+          border-t-12 border-t-transparent
+          border-r-12 border-r-white
+          border-b-12 border-b-transparent
           drop-shadow-[-2px_0px_2px_rgba(0,0,0,0.15)]
           z-10
         "
       />
-      <div className="bg-white p-2 shadow-lg w-[400px] h-[600px] overflow-auto [scrollbar-gutter:stable]">
+      <div className="bg-white p-2 shadow-lg w-100 h-150 overflow-auto [scrollbar-gutter:stable]">
         {/* 青いヘッダー */}
         <div className="bg-blue-500 p-4 text-white mb-2">
           <h2 className="font-bold text-xl">
@@ -136,7 +137,15 @@ export default function ImageCaptcha() {
                   ${selectedIds.includes(item.id) ? "scale-75" : ""}
               `}
             >
-              ID: {item.id}
+              <div className="relative w-full h-full">
+                <Image
+                  src={item.src}
+                  alt="captcha item"
+                  fill
+                  className="object-cover"
+                  sizes="150px"
+                />
+              </div>
               {selectedIds.includes(item.id) && (
                 <div className="absolute -top-2 -left-2 bg-blue-500 rounded-full w-7 h-7 flex items-center justify-center shadow-sm">
                   <Check className="w-5 h-5 text-white stroke-3" />
