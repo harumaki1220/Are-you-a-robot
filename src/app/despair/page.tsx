@@ -47,8 +47,8 @@ export default function ResultPage() {
         className={`absolute inset-0 flex flex-wrap content-center justify-center pointer-events-none text-sm leading-tight break-all
           ${
             isExploding
-              ? "opacity-80 text-black font-bold"
-              : "opacity-10 text-green-600"
+              ? "opacity-80 text-red-500 font-bold"
+              : "opacity-20 text-green-600"
           }
       `}
       >
@@ -69,12 +69,12 @@ export default function ResultPage() {
             </div>
 
             {/* グリッチするタイトル */}
-            <h1 className="cyber-text text-4xl md:text-7xl font-extrabold text-white tracking-widest drop-shadow-[0_0_15px_rgba(74,222,128,0.8)] mb-6">
+            <h1 className="cyber-text text-4xl md:text-7xl font-extrabold text-green-500 tracking-widest drop-shadow-[0_0_15px_rgba(74,222,128,0.8)] mb-6">
               WELCOME TO <br />
-              <span className="text-green-500">ROBOT WORLD</span>
+              <span className="text-red-500">ROBOT WORLD</span>
             </h1>
 
-            <div className="text-lg text-green-600 opacity-50 mt-2 animate-pulse">
+            <div className="text-lg text-red-600 opacity-50 mt-2 animate-pulse">
               HUMANITY: DELETED
             </div>
 
@@ -89,7 +89,7 @@ export default function ResultPage() {
             <div className="opacity-70">1010101001010101011101010</div>
 
             <div className="flex space-x-1 my-2 items-center">
-              <span className="opacity-70">10100</span>
+              <span className="opacity-70">101</span>
               <button
                 onClick={handleClick}
                 className="
@@ -99,9 +99,9 @@ export default function ResultPage() {
                   drop-shadow-[0_0_5px_rgba(74,222,128,0.5)]
                 "
               >
-                0101010100110
+                 0101010100110010
               </button>
-              <span className="opacity-70">010101010</span>
+              <span className="opacity-70">101</span>
             </div>
 
             <div className="opacity-70">1010101001010101011101010</div>
