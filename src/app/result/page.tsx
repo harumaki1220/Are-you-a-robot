@@ -1,6 +1,7 @@
 "use client";
 
 import RecaptchaBox from "@/components/RecaptchaBox";
+import ImageCaptcha from "@/components/ImageCaptcha";
 
 const Result = () => {
   return (
@@ -13,7 +14,7 @@ const Result = () => {
 
       <div className="relative z-20 flex flex-col items-center">
         <div className="w-80 h-96 bg-gray-100 border border-gray-300 shadow-lg rounded-md flex items-center justify-center">
-          <h2 className="text-3xl font-semibold text-gray-700">SCORE: 100%</h2>
+          <h2 className="text-3xl font-semibold text-gray-700">`${}`</h2>
         </div>
 
         <div className="mt-8 flex gap-8">
