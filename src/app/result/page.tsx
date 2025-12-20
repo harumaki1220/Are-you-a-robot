@@ -29,9 +29,15 @@ function ResultContent() {
           <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-10 rounded-md text-lg">
             もう一度プレイ
           </button>
+	  {score === "100" ? (
           <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-12 rounded-md text-lg">
             ヨウコソ
           </button>
+	  ) : (
+	    <div className="bg-gray-200 py-3 px-12 rounded-md text-gray-400 font-bold text-lg">
+	      繝ｨ繧ｦ繧ｳ繧ｽ
+	    </div>
+	  )}
         </div>
       </div>
     </div>
