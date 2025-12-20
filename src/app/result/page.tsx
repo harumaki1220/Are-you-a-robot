@@ -30,8 +30,8 @@ function ResultContent() {
             もう一度プレイ
           </button>
 	  {score === "100" ? (
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-12 rounded-md text-lg">
-            ヨウコソ
+          <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-12 rounded-md text-lg">
+            ヨ ウ コ ソ
           </button>
 	  ) : (
 	    <div className="bg-gray-200 py-3 px-12 rounded-md text-gray-400 font-bold text-lg">
