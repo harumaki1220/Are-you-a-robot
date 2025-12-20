@@ -2,26 +2,27 @@
 
 import { useEffect, useState } from "react";
 
-import { RefreshCw, Headphones, Info } from "lucide-react";
+import { RefreshCw, Headphones, Info, Check } from "lucide-react";
 import { ImageItem, LOVE_IMAGE_DATA, BIKE_IMAGE_DATA } from "@/data/imageData";
 
-// まっちゃへ
 // 必ず一枚は isCorrect: true の画像を含むようランダムに9枚を選ぶ関数に実装
 const getRandomImages = (sourceData: ImageItem[]) => {
   // true の画像の集合を作成
   // そこからランダムに一つ選ぶ
-  const trueSet = sourceData.filter(item => item.isCorrect);
+  const trueSet = sourceData.filter((item) => item.isCorrect);
   const randomTrue = trueSet[Math.floor(Math.random() * trueSet.length)];
 
   // 先程選んだ正解の画像を除外してシャッフルし、8枚選ぶ
-  const shuffled = [...sourceData].filter(item => item !== randomTrue).sort(() => 0.5 - Math.random());
+  const shuffled = [...sourceData]
+    .filter((item) => item !== randomTrue)
+    .sort(() => 0.5 - Math.random());
 
   // 8枚選び、ランダムな位置に正解画像を挿入する
   const selected = shuffled.slice(0, 8);
   const insertIndex = Math.floor(Math.random() * (selected.length + 1));
   selected.splice(insertIndex, 0, randomTrue);
   return selected;
-};  
+};
 
 export default function ImageCaptcha() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -118,15 +119,16 @@ export default function ImageCaptcha() {
           <div
             key={item.id}
             onClick={() => toggleSelect(item.id)}
-            className={`bg-gray-200 aspect-square flex items-center justify-center cursor-pointer
-                ${
-                  selectedIds.includes(item.id)
-                    ? "border-2 border-blue-500"
-                    : ""
-                }
+            className={`bg-gray-200 aspect-square flex items-center justify-center cursor-pointer transition-transform duration-200 relative
+                ${selectedIds.includes(item.id) ? "scale-75" : ""}
             `}
           >
             ID: {item.id}
+            {selectedIds.includes(item.id) && (
+              <div className="absolute -top-2 -left-2 bg-blue-500 rounded-full w-7 h-7 flex items-center justify-center shadow-sm">
+                <Check className="w-5 h-5 text-white stroke-3" />
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -166,7 +168,8 @@ export default function ImageCaptcha() {
         {showInfo && (
           <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
             <p>
-              テキストで書かれているものを含むタイルをすべてクリックします。該当するものを含む新しい画像が表示された場合は、それもクリックしてください。クリックする画像がなくなったら、[確認]をクリックします。
+              画面上部のテキストか画像に記載されている項目を含む画像を選択し、[確認]
+              をクリックします。新しい画像に変更する場合は、再読み込みアイコンをクリックします。
             </p>
           </div>
         )}
