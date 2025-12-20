@@ -105,74 +105,88 @@ export default function ImageCaptcha() {
   };
 
   return (
-    <div className="bg-white p-2 shadow-lg w-full max-w-100 mx-auto max-h-150 overflow-auto [scrollbar-gutter:stable]">
-      {/* 青いヘッダー */}
-      <div className="bg-blue-500 p-4 text-white mb-2">
-        <h2 className="font-bold text-xl">
-          {questionStep === 0 ? "自転車" : "愛"}
-        </h2>
-        <p>の画像をすべて選択してください</p>
-      </div>
+    <div className="relative">
+      {/* 矢印（吹き出しの三角形） */}
+      <div
+        className="
+          absolute -left-3 top-1/2 -translate-y-1/2
+          w-0 h-0
+          border-t-[12px] border-t-transparent
+          border-r-[12px] border-r-white
+          border-b-[12px] border-b-transparent
+          drop-shadow-[-2px_0px_2px_rgba(0,0,0,0.15)]
+          z-10
+        "
+      />
+      <div className="bg-white p-2 shadow-lg w-[400px] h-[600px] overflow-auto [scrollbar-gutter:stable]">
+        {/* 青いヘッダー */}
+        <div className="bg-blue-500 p-4 text-white mb-2">
+          <h2 className="font-bold text-xl">
+            {questionStep === 0 ? "自転車" : "愛"}
+          </h2>
+          <p>の画像をすべて選択してください</p>
+        </div>
 
-      <div className="grid gap-2 grid-cols-3 grid-rows-3">
-        {displayedImages.map((item) => (
-          <div
-            key={item.id}
-            onClick={() => toggleSelect(item.id)}
-            className={`bg-gray-200 aspect-square flex items-center justify-center cursor-pointer transition-transform duration-200 relative
-                ${selectedIds.includes(item.id) ? "scale-75" : ""}
-            `}
-          >
-            ID: {item.id}
-            {selectedIds.includes(item.id) && (
-              <div className="absolute -top-2 -left-2 bg-blue-500 rounded-full w-7 h-7 flex items-center justify-center shadow-sm">
-                <Check className="w-5 h-5 text-white stroke-3" />
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      {errorMessage && (
-        <div className="text-center text-red-500 my-2">{errorMessage}</div>
-      )}
-
-      {/* フッター */}
-      <div className="mt-4 pt-2 border-t">
-        <div className="flex justify-between items-center">
-          <div className="flex gap-6 text-gray-400">
-            <button
-              onClick={handleRefresh}
-              className="hover:text-gray-600 transition-colors"
+        <div className="grid gap-2 grid-cols-3 grid-rows-3">
+          {displayedImages.map((item) => (
+            <div
+              key={item.id}
+              onClick={() => toggleSelect(item.id)}
+              className={`bg-gray-200 aspect-square flex items-center justify-center cursor-pointer transition-transform duration-200 relative
+                  ${selectedIds.includes(item.id) ? "scale-75" : ""}
+              `}
             >
-              <RefreshCw className="w-8 h-8" />
-            </button>
-            <div className="hover:text-gray-600 cursor-pointer transition-colors">
-              <Headphones className="w-8 h-8" />
+              ID: {item.id}
+              {selectedIds.includes(item.id) && (
+                <div className="absolute -top-2 -left-2 bg-blue-500 rounded-full w-7 h-7 flex items-center justify-center shadow-sm">
+                  <Check className="w-5 h-5 text-white stroke-3" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {errorMessage && (
+          <div className="text-center text-red-500 my-2">{errorMessage}</div>
+        )}
+
+        {/* フッター */}
+        <div className="mt-4 pt-2 border-t">
+          <div className="flex justify-between items-center">
+            <div className="flex gap-6 text-gray-400">
+              <button
+                onClick={handleRefresh}
+                className="hover:text-gray-600 transition-colors"
+              >
+                <RefreshCw className="w-8 h-8" />
+              </button>
+              <div className="hover:text-gray-600 cursor-pointer transition-colors">
+                <Headphones className="w-8 h-8" />
+              </div>
+              <button
+                onClick={() => setShowInfo(!showInfo)}
+                className={`hover:text-gray-700 transition-colors ${
+                  showInfo ? "text-blue-500" : ""
+                }`}
+              >
+                <Info className="w-8 h-8" />
+              </button>
             </div>
             <button
-              onClick={() => setShowInfo(!showInfo)}
-              className={`hover:text-gray-700 transition-colors ${
-                showInfo ? "text-blue-500" : ""
-              }`}
+              onClick={handleNextQuestion}
+              className="bg-blue-500 text-white px-6 py-2 rounded"
             >
-              <Info className="w-8 h-8" />
+              {questionStep === 0 ? "確認" : "次へ"}
             </button>
           </div>
-          <button
-            onClick={handleNextQuestion}
-            className="bg-blue-500 text-white px-6 py-2 rounded"
-          >
-            {questionStep === 0 ? "確認" : "次へ"}
-          </button>
+          {showInfo && (
+            <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
+              <p>
+                画面上部のテキストか画像に記載されている項目を含む画像を選択し、[確認]
+                をクリックします。新しい画像に変更する場合は、再読み込みアイコンをクリックします
+              </p>
+            </div>
+          )}
         </div>
-        {showInfo && (
-          <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
-            <p>
-              画面上部のテキストか画像に記載されている項目を含む画像を選択し、[確認]
-              をクリックします。新しい画像に変更する場合は、再読み込みアイコンをクリックします。
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );
