@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { RefreshCw, Headphones, Info, Check } from "lucide-react";
 import { ImageItem, LOVE_IMAGE_DATA, BIKE_IMAGE_DATA } from "@/data/imageData";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 // 必ず一枚は isCorrect: true の画像を含むようランダムに9枚を選ぶ関数に実装
 const getRandomImages = (sourceData: ImageItem[]) => {
@@ -32,6 +33,7 @@ export default function ImageCaptcha() {
   const [questionStep, setQuestionStep] = useState(0); // 0: 自転車, 1: 愛
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [score, setScore] = useState(100); // スコアの初期値
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -101,6 +103,7 @@ export default function ImageCaptcha() {
     } else {
       // 全問クリア - スコアをクエリパラメータで渡して結果ページへ
       // TODO: ルーティング実装時にここを修正
+      router.push(`/result`)
       alert(`認証完了！ スコア: ${score}点`);
     }
   };

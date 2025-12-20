@@ -2,8 +2,19 @@
 
 import RecaptchaBox from "@/components/RecaptchaBox";
 import ImageCaptcha from "@/components/ImageCaptcha";
+import { use } from "react";
 
-const Result = () => {
+interface ResultPageProps {
+  searchParams: Promise<{
+    score?: string;
+  }>;
+}
+
+const Result = ({ searchParams }: ResultPageProps) => {
+  const { score } = use(searchParams);
+
+  console.log({score})
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 relative">
       <div className="absolute inset-0 flex items-center justify-center z-0 opacity-40 pointer-events-none">
@@ -14,7 +25,7 @@ const Result = () => {
 
       <div className="relative z-20 flex flex-col items-center">
         <div className="w-80 h-96 bg-gray-100 border border-gray-300 shadow-lg rounded-md flex items-center justify-center">
-          <h2 className="text-3xl font-semibold text-gray-700">`${}`</h2>
+          <h2 className="text-3xl font-semibold text-gray-700">SCORE:{score}</h2>
         </div>
 
         <div className="mt-8 flex gap-8">
