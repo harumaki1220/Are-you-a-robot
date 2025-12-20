@@ -182,7 +182,7 @@ export default function ImageCaptcha() {
             <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
               <p>
                 画面上部のテキストか画像に記載されている項目を含む画像を選択し、[確認]
-                をクリックします。新しい画像に変更する場合は、再読み込みアイコンをクリックします。
+                をクリックします。新しい画像に変更する場合は、再読み込みアイコンをクリックします
               </p>
             </div>
           )}
