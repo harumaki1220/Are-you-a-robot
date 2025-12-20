@@ -1,193 +1,113 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-import { RefreshCw, Headphones, Info, Check } from "lucide-react";
-import { ImageItem, LOVE_IMAGE_DATA, BIKE_IMAGE_DATA } from "@/data/imageData";
+type Status = "idle" | "loading" | "checked";
 
-// 必ず一枚は isCorrect: true の画像を含むようランダムに9枚を選ぶ関数に実装
-const getRandomImages = (sourceData: ImageItem[]) => {
-  // true の画像の集合を作成
-  // そこからランダムに一つ選ぶ
-  const trueSet = sourceData.filter((item) => item.isCorrect);
-  const randomTrue = trueSet[Math.floor(Math.random() * trueSet.length)];
+const RecaptchaBox = () => {
+  const router = useRouter();
 
-  // 先程選んだ正解の画像を除外してシャッフルし、8枚選ぶ
-  const shuffled = [...sourceData]
-    .filter((item) => item !== randomTrue)
-    .sort(() => 0.5 - Math.random());
+  const [status, setStatus] = useState<Status>("idle");
 
-  // 8枚選び、ランダムな位置に正解画像を挿入する
-  const selected = shuffled.slice(0, 8);
-  const insertIndex = Math.floor(Math.random() * (selected.length + 1));
-  selected.splice(insertIndex, 0, randomTrue);
-  return selected;
-};
-
-export default function ImageCaptcha() {
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [showInfo, setShowInfo] = useState(false);
-  const [displayedImages, setDisplayedImages] = useState<ImageItem[]>([]);
-  const [questionStep, setQuestionStep] = useState(0); // 0: 自転車, 1: 愛
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [score, setScore] = useState(100); // スコアの初期値
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const data = questionStep === 0 ? BIKE_IMAGE_DATA : LOVE_IMAGE_DATA;
-      setDisplayedImages(getRandomImages(data));
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [questionStep]);
-
-  const toggleSelect = (id: number) => {
-    if (selectedIds.includes(id)) {
-      setSelectedIds(selectedIds.filter((item) => item !== id));
-    } else {
-      setSelectedIds([...selectedIds, id]);
-    }
-  };
-
-  const handleRefresh = () => {
-    const data = questionStep === 0 ? BIKE_IMAGE_DATA : LOVE_IMAGE_DATA;
-    setDisplayedImages(getRandomImages(data));
-    setSelectedIds([]);
-    setShowInfo(false);
-  };
-
-  // 正解判定ロジック
-  const validateSelection = (): boolean => {
-    // 表示されている画像の中で isCorrect: true のものをすべて取得
-    const correctImages = displayedImages.filter((img) => img.isCorrect);
-    const incorrectImages = displayedImages.filter((img) => !img.isCorrect);
-
-    // すべての正解画像が選択されているか
-    const allCorrectSelected = correctImages.every((img) =>
-      selectedIds.includes(img.id)
-    );
-
-    // 不正解画像が一つも選択されていないか
-    const noIncorrectSelected = incorrectImages.every(
-      (img) => !selectedIds.includes(img.id)
-    );
-
-    return allCorrectSelected && noIncorrectSelected;
-  };
-
-  const handleNextQuestion = () => {
-    if (selectedIds.length === 0) {
-      setErrorMessage("該当する画像をすべて選択してください。");
+  const handleClick = () => {
+    if (status === "loading") return;
+    if (status === "checked") {
+      setStatus("idle");
       return;
     }
-
-    // 正解判定
-    const isCorrectAnswer = validateSelection();
-
-    if (!isCorrectAnswer) {
-      // 間違った場合
-      setScore((prev) => Math.max(0, prev - 10)); // スコアを10減らす（最小0）
-      setErrorMessage("もう一度お試しください");
-      return;
-    }
-
-    // 正解の場合
-    setErrorMessage(null);
-
-    if (questionStep === 0) {
-      setQuestionStep(questionStep + 1);
-      setSelectedIds([]);
-    } else {
-      // 全問クリア - スコアをクエリパラメータで渡して結果ページへ
-      // TODO: ルーティング実装時にここを修正
-      alert(`認証完了！ スコア: ${score}点`);
-    }
+    setStatus("loading");
+    setTimeout(() => {
+      router.push("/choose-images");
+    }, 2000);
+    //setTimeout(() => setStatus("checked"), 3000);
   };
 
+  let checkboxContent = (
+    <span
+      className={`
+      inline-flex items-center justify-center
+      h-9 w-9
+      border-solid
+      transition-[border-radius,border-width,border-color] duration-200 ease-in
+    ${
+      status === "idle"
+        ? "rounded border border-black bg-white"
+        : status === "loading"
+        ? "rounded-full border-[7px] border-[#3498db] border-t-transparent animate-spin"
+        : "checked relative"
+    }
+  `}
+    ></span>
+  );
   return (
-    <div className="relative">
-      {/* 矢印（吹き出しの三角形） */}
-      <div
-        className="
-          absolute -left-3 top-1/2 -translate-y-1/2
-          w-0 h-0
-          border-t-[12px] border-t-transparent
-          border-r-[12px] border-r-white
-          border-b-[12px] border-b-transparent
-          drop-shadow-[-2px_0px_2px_rgba(0,0,0,0.15)]
-          z-10
-        "
-      />
-      <div className="bg-white p-2 shadow-lg w-[400px] h-[600px] overflow-auto [scrollbar-gutter:stable]">
-        {/* 青いヘッダー */}
-        <div className="bg-blue-500 p-4 text-white mb-2">
-          <h2 className="font-bold text-xl">
-            {questionStep === 0 ? "自転車" : "愛"}
-          </h2>
-          <p>の画像をすべて選択してください</p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="flex flex-col items-center gap-20">
+        <h1
+          className="
+	text-5xl
+	md:text-6xl
+	font-extrabold
+	tracking-widest
+	text-gray-600
+	mb-12
+	select-none
+	"
+        >
+          ARE YOU A ROBOT ?
+        </h1>
 
-        <div className="grid gap-2 grid-cols-3 grid-rows-3">
-          {displayedImages.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => toggleSelect(item.id)}
-              className={`bg-gray-200 aspect-square flex items-center justify-center cursor-pointer transition-transform duration-200 relative
-                  ${selectedIds.includes(item.id) ? "scale-75" : ""}
-              `}
-            >
-              ID: {item.id}
-              {selectedIds.includes(item.id) && (
-                <div className="absolute -top-2 -left-2 bg-blue-500 rounded-full w-7 h-7 flex items-center justify-center shadow-sm">
-                  <Check className="w-5 h-5 text-white stroke-3" />
-                </div>
-              )}
+        <button
+          onClick={handleClick}
+          className="relative
+	flex
+	items-center
+	gap-5
+	rounded
+	border border-[#d3d3d3]
+	bg-[#f9f9f9]
+	text-left
+	shadow-sm
+	text-gray-700
+	w-[450px] h-[110px]
+        px-4"
+          aria-label="reCAPTCHA checkbox"
+        >
+          {checkboxContent}
+          <span className="text-lg font-medium text-[#444]">I'm a robot</span>
+          <div
+            className="
+	  flex flex-col
+	  items-center
+	  justify-center
+	  ml-auto
+	  px-3
+	  py-2
+	  min-w-[110px]
+	  h-full"
+          >
+            <Image
+              src="/meCHAKCHA.png"
+              alt="meCHAKCHA"
+              width={45}
+              height={45}
+              className="mb-2"
+            />
+            <div className="flex flex-col items-center gap-0 leading-tight">
+              <p className="text-[11px] font-medium text-gray-600">meCHAKCHA</p>
+              <p className="text-[9px] text-gray-600">No Privacy No Terms</p>
             </div>
-          ))}
-        </div>
-        {errorMessage && (
-          <div className="text-center text-red-500 my-2">{errorMessage}</div>
-        )}
-
-        {/* フッター */}
-        <div className="mt-4 pt-2 border-t">
-          <div className="flex justify-between items-center">
-            <div className="flex gap-6 text-gray-400">
-              <button
-                onClick={handleRefresh}
-                className="hover:text-gray-600 transition-colors"
-              >
-                <RefreshCw className="w-8 h-8" />
-              </button>
-              <div className="hover:text-gray-600 cursor-pointer transition-colors">
-                <Headphones className="w-8 h-8" />
-              </div>
-              <button
-                onClick={() => setShowInfo(!showInfo)}
-                className={`hover:text-gray-700 transition-colors ${
-                  showInfo ? "text-blue-500" : ""
-                }`}
-              >
-                <Info className="w-8 h-8" />
-              </button>
-            </div>
-            <button
-              onClick={handleNextQuestion}
-              className="bg-blue-500 text-white px-6 py-2 rounded"
-            >
-              {questionStep === 0 ? "確認" : "次へ"}
-            </button>
           </div>
-          {showInfo && (
-            <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
-              <p>
-                画面上部のテキストか画像に記載されている項目を含む画像を選択し、[確認]
-                をクリックします。新しい画像に変更する場合は、再読み込みアイコンをクリックします
-              </p>
-            </div>
-          )}
-        </div>
+        </button>
+
+        <span className="text-black">TEST : Current Status is {status}</span>
+        {/* sorry but I do not want to write f*ckin' CSS anymore */}
+        <div />
+        <div />
       </div>
     </div>
   );
-}
+};
+
+export default RecaptchaBox;
