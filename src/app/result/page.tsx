@@ -2,12 +2,13 @@
 
 import { Suspense } from "react";
 import RecaptchaBox from "@/components/RecaptchaBox";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // useSearchParamsを使用するコンポーネントを分離
 function ResultContent() {
   const searchParams = useSearchParams();
   const score = searchParams.get("score");
+  const router = useRouter();
   const displayScore = score ?? "スコアを取得できませんでした";
 
   return (
@@ -26,11 +27,11 @@ function ResultContent() {
         </div>
 
         <div className="mt-8 flex gap-8">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-10 rounded-md text-lg">
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-10 rounded-md text-lg" onClick={() => {router.push('./start')}}>
             もう一度プレイ
           </button>
 	  {score === "100" ? (
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-12 rounded-md text-lg">
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-12 rounded-md text-lg" onClick={() => {router.push('./despair')}}>
             ヨウコソ
           </button>
 	  ) : (
