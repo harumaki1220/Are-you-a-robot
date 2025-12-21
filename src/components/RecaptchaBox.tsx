@@ -4,11 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import ImageCaptcha from "@/components/ImageCaptcha";
 
-type BeginSlideProps = {
+type SlideProps = {
   onNext: () => void;
 };
 
-const BeginSlide = ({ onNext }: BeginSlideProps) => {
+// イントロ画面（チーム紹介）
+const BeginSlide = ({ onNext }: SlideProps) => {
   return (
     <div className="bg-blue-500 text-white min-h-screen w-full flex items-center justify-center font-sans">
       <div className="flex items-center gap-6">
@@ -16,15 +17,15 @@ const BeginSlide = ({ onNext }: BeginSlideProps) => {
         <p className="text-6xl mb-8">:(</p>
 	
 	<p className="text-lg mb-4">
-				      所属: 東洋大学情報連携学部 
+          所属: 東洋大学情報連携学部 
 	</p>
 	
 	<p className="mb-6">
-        	団体: 情報技術メディア研究会
+          団体: 情報技術メディア研究会
 	</p>
 
 	<p className="opacity-80 mb-10">
-        	チーム: WE ARE HUMAN
+          チーム: WE ARE HUMAN
 	</p>
       </div>
 
@@ -52,10 +53,60 @@ const BeginSlide = ({ onNext }: BeginSlideProps) => {
   );
 };
 
+// BSOD風画面（人間性に問題がある）
+const BSODSlide = ({ onNext }: SlideProps) => {
+  return (
+    <div className="bg-[#0078D7] text-white min-h-screen w-full flex flex-col items-center justify-center font-sans px-8">
+      {/* 悲しい顔 */}
+      <div className="text-[120px] md:text-[180px] mb-8 select-none">
+        :(
+      </div>
+
+      {/* エラーメッセージ */}
+      <div className="max-w-3xl text-left space-y-6">
+        <p className="text-xl md:text-2xl leading-relaxed">
+          あなたの人間性に問題が発生したため、テストを実行する必要があります。
+        </p>
+        
+        <p className="text-lg md:text-xl opacity-90">
+          エラー情報を収集しています...
+        </p>
+
+        {/* 進捗バー風 */}
+        <div className="flex items-center gap-4 mt-8">
+          <div className="text-xl font-bold">100%</div>
+          <div className="text-lg opacity-80">完了</div>
+        </div>
+
+        {/* エラーコード */}
+        <div className="mt-12 pt-8 border-t border-white/20 space-y-2">
+          <p className="text-sm opacity-70">
+            詳細については、次を検索してください:
+          </p>
+          <p className="text-lg font-mono">
+            HUMAN_VERIFICATION_REQUIRED
+          </p>
+          
+          {/* スタートボタン */}
+          <div className="mt-8">
+            <button
+              onClick={onNext}
+              className="px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded transition-all duration-200 hover:scale-105 active:scale-95"
+            >
+              <span className="text-lg font-medium">テストを開始する</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type ScreenState = "intro" | "bsod" | "recaptcha";
 type Status = "idle" | "loading" | "captcha" | "checked";
 
 const RecaptchaBox = () => {
-const [showIntro, setShowIntro] = useState(true);
+  const [screenState, setScreenState] = useState<ScreenState>("intro");
   const [status, setStatus] = useState<Status>("idle");
 
   const handleClick = () => {
@@ -93,9 +144,13 @@ const [showIntro, setShowIntro] = useState(true);
     ></span>
   );
 
-  // --- 条件分岐: オープニング画面を表示するか、本編を表示するか ---
-  if (showIntro) {
-    return <BeginSlide onNext={() => setShowIntro(false)} />;
+  // --- 条件分岐: 画面状態に応じて表示を切り替え ---
+  if (screenState === "intro") {
+    return <BeginSlide onNext={() => setScreenState("bsod")} />;
+  }
+
+  if (screenState === "bsod") {
+    return <BSODSlide onNext={() => setScreenState("recaptcha")} />;
   }
 
   return (
@@ -158,87 +213,49 @@ const [showIntro, setShowIntro] = useState(true);
             </span>
           </div>
         </h1>
-      <div
-        className={`
-          fixed inset-0 bg-blue-500 text-white flex items-center justify-center z-40
-          transition-transform duration-[1500ms] ease-in-out
-          ${status === "captcha" ? "-translate-y-full" : "translate-y-0"}
-        `}
-      >
-        {/* オープニングテキスト */}
-        {showIntro && (
-          <div className="animate-in fade-in zoom-in duration-500">
-            <div className="flex items-center gap-6">
-              <div className="flex flex-col text-sm leading-relaxed text-right border-r border-white/30 pr-6">
-                <div className="text-lg font-medium">東洋大学情報連携学部</div>
-                <div className="text-lg font-medium">情報技術メディア研究会</div>
-                <div className="text-xl font-semibold mt-1">チーム : WE ARE HUMAN</div>
-              </div>
-              <button
-                onClick={() => setShowIntro(false)}
-                className="group w-16 h-16 flex items-center justify-center transition-transform hover:scale-110 active:scale-95"
-                aria-label="Start"
-              >
-                <div className="w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent border-l-[30px] border-l-white ml-2 filter drop-shadow-md" />
-              </button>
+
+      {/* チェックボックスエリア */}
+      <div className="relative">
+        <button
+          onClick={handleClick}
+          className={`
+            relative flex items-center gap-5 rounded border border-[#d3d3d3] bg-[#f9f9f9]
+            text-left shadow-2xl text-gray-700 h-[110px] px-4
+            transition-all duration-300 cursor-crosshair hover:bg-white
+            ${status === "captcha" ? "w-[600px]" : "w-[400px]"}
+          `}
+        >
+          {checkboxContent}
+          <span className="text-lg font-medium text-[#444]">I'm a robot</span>
+          <div className="flex flex-col items-center justify-center ml-auto px-3 py-2 min-w-[110px] h-full">
+            <Image
+              src="/meCHAKCHA.png"
+              alt="meCHAKCHA"
+              width={45}
+              height={45}
+              className="mb-2"
+            />
+            <div className="flex flex-col items-center gap-0 leading-tight">
+              <p className="text-[11px] font-medium text-gray-600">meCHAKCHA</p>
+              <p className="text-[9px] text-gray-600">No Privacy No Terms</p>
             </div>
+          </div>
+        </button>
+
+        {/* 画像キャプチャ出現 */}
+        {status === "captcha" && (
+          <div
+            className="
+              absolute top-1/2 -translate-y-1/2 z-50
+              animate-in zoom-in duration-300
+              origin-left drop-shadow-2xl
+            "
+            style={{ left: '70px' }}
+          >
+            <ImageCaptcha />
           </div>
         )}
       </div>
-
-      
-      {!showIntro && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-          {/* クリック可能エリア */}
-          <div className="pointer-events-auto">
-	    <div className="relative flex items-start">
-            
-            {/* チェックボックスエリア (ご要望のコードを統合) */}
-            <div className="relative z-10">
-              <button
-                onClick={handleClick}
-                className={`
-                  relative flex items-center gap-5 rounded border border-[#d3d3d3] bg-[#f9f9f9]
-                  text-left shadow-2xl text-gray-700 h-[110px] px-4
-                  transition-all duration-300 cursor-crosshair hover:bg-white
-                  ${status === "captcha" ? "w-[600px]" : "w-[400px]"}
-                `}
-              >
-                {checkboxContent}
-                <span className="text-lg font-medium text-[#444]">I'm a robot</span>
-                <div className="flex flex-col items-center justify-center ml-auto px-3 py-2 min-w-[110px] h-full">
-                  <Image
-                    src="/meCHAKCHA.png"
-                    alt="meCHAKCHA"
-                    width={45}
-                    height={45}
-                    className="mb-2"
-                  />
-                  <div className="flex flex-col items-center gap-0 leading-tight">
-                    <p className="text-[11px] font-medium text-gray-600">meCHAKCHA</p>
-                    <p className="text-[9px] text-gray-600">No Privacy No Terms</p>
-                  </div>
-                </div>
-              </button>
-
-              {/* 画像キャプチャ出現 (ボタン幅に合わせて位置調整) */}
-              {status === "captcha" && (
-                <div
-                  className="
-                    absolute top-0 left-full ml-4 
-                    z-50 animate-in zoom-in duration-300
-		    scale-125 origin-left
-                    drop-shadow-2xl
-                  "
-                >
-                  <ImageCaptcha />
-                </div>
-              )}
-            </div>
-          </div>
-          </div>
-	</div>
-      )}
     </div>
   );
 }
