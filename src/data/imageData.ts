@@ -42,4 +42,16 @@ export const BIKE_IMAGE_DATA: ImageItem[] = [
   { id: 210, src: "/bicycle/bicycle_10_true.png", isCorrect: true },
   { id: 211, src: "/bicycle/bicycle_11_true.png", isCorrect: true },
   { id: 212, src: "/bicycle/bicycle_12_true.png", isCorrect: true },
+]
+// 色の画像データ(300番台)
+export const COLOR_IMAGE_DATA: ImageItem[] = [
+  { id: 301, src: "/color/red_000000_false.png", isCorrect: false},
+  { id: 302, src: "/color/red_00FF00_false.png", isCorrect: false },
+  { id: 303, src: "/color/red_330099_false.png", isCorrect: false },
+  { id: 304, src: "/color/red_33ff00_false.png", isCorrect: false },
+  { id: 305, src: "/color/red_FFFFFF_false.png", isCorrect: false },
+  { id: 306, src: "/color/red_cc0000_true.png", isCorrect: true },
+  { id: 307, src: "/color/red_cc0099_false.png", isCorrect: false },
+  { id: 308, src: "/color/red_ff0000_true.png", isCorrect: true },
+  { id: 309, src: "/color/red_ff3300_true.png", isCorrect: true }
 ];

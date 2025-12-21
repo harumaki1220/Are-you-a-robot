@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { RefreshCw, Headphones, Info, Check } from "lucide-react";
-import { ImageItem, LOVE_IMAGE_DATA, BIKE_IMAGE_DATA } from "@/data/imageData";
+import { ImageItem, BIKE_IMAGE_DATA, COLOR_IMAGE_DATA } from "@/data/imageData";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -38,7 +38,7 @@ export default function ImageCaptcha() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const data = questionStep === 0 ? BIKE_IMAGE_DATA : LOVE_IMAGE_DATA;
+      const data = questionStep === 0 ? BIKE_IMAGE_DATA : COLOR_IMAGE_DATA;
       setDisplayedImages(getRandomImages(data));
     }, 0);
 
@@ -54,7 +54,7 @@ export default function ImageCaptcha() {
   };
 
   const handleRefresh = () => {
-    const data = questionStep === 0 ? BIKE_IMAGE_DATA : LOVE_IMAGE_DATA;
+    const data = questionStep === 0 ? BIKE_IMAGE_DATA : COLOR_IMAGE_DATA;
     setDisplayedImages(getRandomImages(data));
     setSelectedIds([]);
     setShowInfo(false);
@@ -126,7 +126,7 @@ export default function ImageCaptcha() {
         {/* 青いヘッダー */}
         <div className="bg-blue-500 p-4 text-white mb-2">
           <h2 className="font-bold text-xl">
-            {questionStep === 0 ? "自転車" : "愛"}
+            {questionStep === 0 ? "自転車" : "赤色"}
           </h2>
           <p>の画像をすべて選択してください</p>
         </div>
