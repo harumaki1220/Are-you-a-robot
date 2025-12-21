@@ -13,12 +13,22 @@ const BeginSlide = ({ onNext }: BeginSlideProps) => {
     <div className="bg-blue-500 text-white min-h-screen w-full flex items-center justify-center font-sans">
       <div className="flex items-center gap-6">
         {/* Profile */}
-        <div className="flex flex-col text-sm leading-relaxed text-right border-r border-white/30 pr-6">
-          <div className="text-lg font-medium">東洋大学情報連携学部</div>
-          <div className="text-lg font-medium">情報技術メディア研究会</div>
-          <div className="text-xl font-semibold mt-1">チーム : WE ARE HUMAN</div>
-        </div>
+        <p className="text-6xl mb-8">:(</p>
+	
+	<p className="text-lg mb-4">
+				      所属: 東洋大学情報連携学部 
+	</p>
+	
+	<p className="mb-6">
+        	団体: 情報技術メディア研究会
+	</p>
 
+	<p className="opacity-80 mb-10">
+        	チーム: WE ARE HUMAN
+	</p>
+      </div>
+
+      <div className="flex items-center gap-6">
         {/* Next Button */}
         <button
           onClick={onNext}
@@ -121,7 +131,7 @@ const [showIntro, setShowIntro] = useState(true);
           className={`
             transition-all duration-500 ease-out z-10
             ${status === "captcha"
-              ? "scale-75 md:scale-90 -translate-y-[21rem] mr-8"
+              ? "scale-75 md:scale-90 -translate-y-[18rem] mr-8" // -translate-y-70相当の移動
               : "mb-20"
             }
           `}
@@ -211,16 +221,15 @@ const [showIntro, setShowIntro] = useState(true);
                 </div>
               </button>
 
-              {/* 画像キャプチャ出現 (チェックボックスの真横に配置) */}
+              {/* 画像キャプチャ出現 (ボタン幅に合わせて位置調整) */}
               {status === "captcha" && (
                 <div
                   className="
-                    absolute top-1/2 -translate-y-1/2 z-50
-                    animate-in zoom-in duration-300
-                    origin-left
-                    drop-shadow-xl
+                    absolute top-0 left-full ml-4 
+                    z-50 animate-in zoom-in duration-300
+		    scale-125 origin-left
+                    drop-shadow-2xl
                   "
-                  style={{ left: '70px' }}
                 >
                   <ImageCaptcha />
                 </div>
@@ -235,3 +244,4 @@ const [showIntro, setShowIntro] = useState(true);
 }
 
 export default RecaptchaBox;
+
