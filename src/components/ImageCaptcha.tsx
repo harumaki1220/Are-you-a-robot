@@ -122,7 +122,7 @@ export default function ImageCaptcha() {
           z-10
         "
       />
-      <div className="bg-white p-2 shadow-lg w-170 h-210 overflow-auto [scrollbar-gutter:stable]">
+      <div className="bg-white p-2 shadow-lg w-127 h-160 overflow-auto [scrollbar-gutter:stable]">
         {/* 青いヘッダー */}
         <div className="bg-blue-500 p-4 text-white mb-2">
           <h2 className="font-bold text-xl">
