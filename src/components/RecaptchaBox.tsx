@@ -11,22 +11,22 @@ type BeginSlideProps = {
 const BeginSlide = ({ onNext }: BeginSlideProps) => {
   return (
     <div className="bg-blue-500 text-white min-h-screen w-full flex items-center justify-center font-sans">
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col items-center text-center">
         {/* Profile */}
-        <p className="text-6xl mb-8">:(</p>
+        <p className="text-8xl font-bold mb-10">:)</p>
 	
-	<p className="text-lg mb-4">
-				      所属: 東洋大学情報連携学部 
+	<p className="text-4xl font-bold mb-10">
+	        所属: 東洋大学情報連携学部 
 	</p>
 	
-	<p className="mb-6">
+	<p className="text-4xl font-bold mb-10">
         	団体: 情報技術メディア研究会
 	</p>
 
-	<p className="opacity-80 mb-10">
+	<p className="text-4xl font-bold mb-10">
         	チーム: WE ARE HUMAN
 	</p>
-      </div>
+
 
       <div className="flex items-center gap-6">
         {/* Next Button */}
@@ -47,6 +47,7 @@ const BeginSlide = ({ onNext }: BeginSlideProps) => {
             "
           />
         </button>
+      </div>
       </div>
     </div>
   );
