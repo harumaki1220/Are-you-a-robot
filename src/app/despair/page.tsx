@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 // 固定のバイナリパターン
 const BINARY_PATTERN = [
@@ -78,8 +79,22 @@ export default function ResultPage() {
               HUMANITY: DELETED
             </div>
 
-            <div className="mt-12 text-gray-500 text-sm">
+            <div className="mt-8 text-gray-500 text-sm mb-12">
               ID: 201-384-ROBOT-V3 Verified
+            </div>
+
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 fill-mode-forwards">
+              <Link
+                href="/"
+                className="
+                  inline-block px-8 py-3 
+                  border border-green-600 text-green-600 font-bold tracking-widest
+                  hover:bg-green-600 hover:text-black 
+                  transition-colors duration-200
+                "
+              >
+                [ SYSTEM REBOOT ]
+              </Link>
             </div>
           </div>
         ) : (
@@ -99,7 +114,7 @@ export default function ResultPage() {
                   drop-shadow-[0_0_5px_rgba(74,222,128,0.5)]
                 "
               >
-                 0101010100110010
+                0101010100110010
               </button>
               <span className="opacity-70">101</span>
             </div>
