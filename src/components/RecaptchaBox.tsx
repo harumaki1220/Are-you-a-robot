@@ -45,7 +45,6 @@ const RecaptchaBox = () => {
     </span>
   );
 
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white transition-all duration-500">
       {/* タイトル（captcha表示時は上に移動） */}
