@@ -121,7 +121,7 @@ const [showIntro, setShowIntro] = useState(true);
           className={`
             transition-all duration-500 ease-out z-10
             ${status === "captcha"
-              ? "scale-75 md:scale-90 -translate-y-[18rem] mr-8" // -translate-y-70相当の移動
+              ? "scale-75 md:scale-90 -translate-y-[21rem] mr-8"
               : "mb-20"
             }
           `}
@@ -211,16 +211,16 @@ const [showIntro, setShowIntro] = useState(true);
                 </div>
               </button>
 
-              {/* 画像キャプチャ出現 (ボタン幅に合わせて位置調整) */}
+              {/* 画像キャプチャ出現 (チェックボックスの真横に配置) */}
               {status === "captcha" && (
                 <div
                   className="
-                  absolute top-1/2 left-full ml-3
-		  -translate-y-1/2
-		  z-50animate-in zoom-in duration-300
-		  origin-left
-		  drop-shadow-xl
+                    absolute top-1/2 -translate-y-1/2 z-50
+                    animate-in zoom-in duration-300
+                    origin-left
+                    drop-shadow-xl
                   "
+                  style={{ left: '70px' }}
                 >
                   <ImageCaptcha />
                 </div>
