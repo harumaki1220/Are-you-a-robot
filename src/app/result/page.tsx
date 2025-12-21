@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense } from "react";
-import RecaptchaBox from "@/components/RecaptchaBox";
 import PentagonChart from "@/components/PentagonChart";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -55,9 +54,29 @@ function ResultContent() {
         }
       `}</style>
 
-      <div className="absolute inset-0 flex items-center justify-center z-0 opacity-40 pointer-events-none">
-        <div className="transform scale-90">
-          <RecaptchaBox />
+      {/* 背景：reCAPTCHA風のデザイン */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-0 opacity-40 pointer-events-none">
+        {/* タイトル */}
+        <div className="mb-20 flex items-center gap-4">
+          <span className="text-4xl opacity-60 grayscale animate-spin select-none" style={{ animationDuration: '4s' }}>
+            ⚙️
+          </span>
+          <span className="text-5xl font-black font-mono tracking-widest bg-gradient-to-b from-gray-600 via-gray-300 to-gray-600 bg-clip-text text-transparent select-none">
+            ARE YOU A ROBOT?
+          </span>
+          <span className="text-4xl opacity-60 grayscale select-none" style={{ animation: 'spin 4s linear infinite reverse' }}>
+            ⚙️
+          </span>
+        </div>
+        
+        {/* チェックボックス風 */}
+        <div className="flex items-center gap-5 rounded border border-[#d3d3d3] bg-[#f9f9f9] shadow-sm text-gray-700 w-[400px] h-[110px] px-4">
+          <span className="inline-flex items-center justify-center h-9 w-9 rounded border border-black bg-white"></span>
+          <span className="text-lg font-medium text-[#444]">I'm a robot</span>
+          <div className="flex flex-col items-center justify-center ml-auto px-3 py-2">
+            <div className="text-[11px] font-medium text-gray-600">meCHAKCHA</div>
+            <div className="text-[9px] text-gray-600">No Privacy No Terms</div>
+          </div>
         </div>
       </div>
 
