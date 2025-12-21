@@ -39,11 +39,20 @@ export default function ResultPage() {
   return (
     <div
       className={`
-        min-h-screen font-mono p-4 flex flex-col items-center justify-center overflow-hidden select-none transition-colors duration-100
+        relative min-h-screen font-mono p-4 flex flex-col items-center justify-center overflow-hidden select-none transition-colors duration-100
         ${isExploding ? "bg-white" : "bg-black"} 
         ${isExploding ? "glitch-screen" : ""}
       `}
     >
+      <div
+        className="pointer-events-none absolute inset-0 z-50 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-size-[100%_4px,3px_100%]"
+        style={{ backgroundSize: "100% 3px" }}
+      />
+
+      <div className="pointer-events-none absolute inset-0 z-50 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.6)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 z-40 opacity-[0.03] animate-pulse bg-white mix-blend-overlay"></div>
+
+      {/* 背景の装飾（バイナリコード） */}
       <div
         className={`absolute inset-0 flex flex-wrap content-center justify-center pointer-events-none text-sm leading-tight break-all
           ${
@@ -63,7 +72,7 @@ export default function ResultPage() {
       <div className="z-10 text-center relative w-full max-w-4xl">
         {showWelcome ? (
           <div className="text-left inline-block">
-            <div className="text-lg text-green-600 opacity-70 mb-4 animate-pulse h-8">
+            <div className="text-lg text-green-600 opacity-70 mb-4 animate-pulse h-8 font-bold">
               {showWelcome && (
                 <TypeAnimation
                   sequence={[
@@ -87,7 +96,7 @@ export default function ResultPage() {
               </h1>
             </div>
 
-            <div className="text-lg text-red-600/80 mt-2 h-24">
+            <div className="text-lg text-red-600/90 mt-2 h-24 font-bold tracking-wider">
               <TypeAnimation
                 sequence={[
                   3000,
@@ -109,12 +118,21 @@ export default function ResultPage() {
                 <Link
                   href="/"
                   className="
-                    inline-block px-8 py-3 
+                    relative inline-block px-8 py-3 
                     border border-green-600 text-green-600 font-bold tracking-widest
                     hover:bg-green-600 hover:text-black 
                     transition-colors duration-200
+                    overflow-hidden
+                    group
                   "
                 >
+                  <span
+                    className="absolute inset-0 bg-black/10 group-hover:bg-transparent pointer-events-none bg-size-[100%_4px]"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(transparent 50%, rgba(0,0,0,0.5) 50%)",
+                    }}
+                  ></span>
                   [ SYSTEM REBOOT ]
                 </Link>
               </div>
