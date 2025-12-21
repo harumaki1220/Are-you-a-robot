@@ -180,7 +180,8 @@ const [showIntro, setShowIntro] = useState(true);
       {!showIntro && (
         <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
           {/* クリック可能エリア */}
-          <div className="pointer-events-auto relative flex flex-col items-center">
+          <div className="pointer-events-auto">
+	    <div className="relative flex items-start">
             
             {/* チェックボックスエリア (ご要望のコードを統合) */}
             <div className="relative z-10">
@@ -214,9 +215,11 @@ const [showIntro, setShowIntro] = useState(true);
               {status === "captcha" && (
                 <div
                   className="
-                    absolute top-2 left-[620px] 
-                    z-50 animate-in zoom-in duration-300 scale-125 origin-left
-                    drop-shadow-2xl
+                  absolute top-1/2 left-full ml-3
+		  -translate-y-1/2
+		  z-50animate-in zoom-in duration-300
+		  origin-left
+		  drop-shadow-xl
                   "
                 >
                   <ImageCaptcha />
@@ -224,9 +227,9 @@ const [showIntro, setShowIntro] = useState(true);
               )}
             </div>
           </div>
-        </div>
+          </div>
+	</div>
       )}
-
     </div>
   );
 }
