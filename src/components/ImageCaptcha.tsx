@@ -29,6 +29,7 @@ const getRandomImages = (sourceData: ImageItem[]) => {
 export default function ImageCaptcha() {
   const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [headphone, setHeadphone] = useState(false)
   const [showInfo, setShowInfo] = useState(false);
   const [displayedImages, setDisplayedImages] = useState<ImageItem[]>([]);
   const [questionStep, setQuestionStep] = useState(0); // 0: 自転車, 1: 愛
@@ -108,7 +109,7 @@ export default function ImageCaptcha() {
   };
 
   return (
-    <div className="relative">
+    <div>
       {/* 矢印（吹き出しの三角形） */}
       <div
         className="
@@ -121,7 +122,7 @@ export default function ImageCaptcha() {
           z-10
         "
       />
-      <div className="bg-white p-2 shadow-lg w-100 h-150 overflow-auto [scrollbar-gutter:stable]">
+      <div className="bg-white p-2 shadow-lg w-170 h-210 overflow-auto [scrollbar-gutter:stable]">
         {/* 青いヘッダー */}
         <div className="bg-blue-500 p-4 text-white mb-2">
           <h2 className="font-bold text-xl">
@@ -170,8 +171,10 @@ export default function ImageCaptcha() {
               >
                 <RefreshCw className="w-8 h-8" />
               </button>
-              <div className="hover:text-gray-600 cursor-pointer transition-colors">
-                <Headphones className="w-8 h-8" />
+              <div className={`hover:text-gray-600 cursor-pointer transition-colors ${
+                  headphone ? "text-blue-500" : ""
+                }`} >
+                <Headphones className="w-8 h-8" onClick={() => setHeadphone(!headphone)} />
               </div>
               <button
                 onClick={() => setShowInfo(!showInfo)}
@@ -189,6 +192,12 @@ export default function ImageCaptcha() {
               {questionStep === 0 ? "確認" : "次へ"}
             </button>
           </div>
+          {headphone && (
+                    <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
+                      <p>ﾋﾟｰｰｰ｡ｶﾞｶﾞｶﾞｶﾞｯ……</p>
+                      <p>変な音がする。</p>
+                    </div>
+                  )}
           {showInfo && (
             <div className="mt-4 p-4 text-sm text-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
               <p>
